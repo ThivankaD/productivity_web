@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  frontend:
+    build: ./productivity-hub
+    ports:
+      - "3000:3000"          # Map container port 80 (nginx/production build) to host 3000
+    depends_on:
+      - backend
+
+  backend:
+    build: ./node-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=db          # Must be the service name of MySQL
+      - DB_PORT=3306        # Internal MySQL port inside the container
+      - DB_USER=root
+      - DB_PASSWORD=80332714
+      - DB_NAME=productivity_hub
+    volumes:
+    - ./node-backend:/app 
+    
+
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 80332714
+      MYSQL_DATABASE: productivity_hub
+    ports:
+      - "3306:3306"        
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./db-init:/docker-entrypoint-initdb.d
+
+volumes:
+  db_data:

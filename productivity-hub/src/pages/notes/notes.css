@@ -1,0 +1,141 @@
+.notes-container-full {
+  max-width: auto;
+  margin: auto;
+  padding: 20px;
+}
+
+.notes-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.notes-input input,
+.notes-input textarea {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 800px;
+}
+
+.notes-input button {
+  padding: 8px 12px;
+  background: #4e54c8;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 400px;
+}
+.notes-input button:hover {
+  background: #3c41a6;
+}
+
+.notes-list-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.note-card-full {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  position: relative;
+}
+.note-card-full:hover {
+  transform: translateY(-3px);
+}
+
+.note-title-full {
+  padding: 8px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.note-text-preview {
+  padding: 10px;
+  font-size: 14px;
+  color: #333;
+  min-height: 60px;
+}
+
+.edit-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  padding: 4px 8px;
+  background: #f39c12;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #fff;
+}
+.edit-btn:hover {
+  background: #d68910;
+}
+
+/* Modal Styling */
+/* Fullscreen Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.85); /* darker background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: #fff;
+  width: 80%;         /* take most of the screen */
+  height: 90vh;       /* taller modal for more content */
+  border-radius: 12px;
+  overflow-y: auto;   /* scroll vertically if note is very long */
+  overflow-x: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  animation: fadeIn 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-title {
+  padding: 20px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.modal-body {
+  flex: 1;   /* take all remaining space */
+  padding: 20px;
+  font-size: 18px;
+  color: #333;
+  line-height: 1.6;
+  white-space: pre-wrap; /* keep line breaks */
+  word-break: break-word; /* wrap long words/content */
+}
+
+.close-btn {
+  align-self: flex-end;
+  margin: 15px;
+  padding: 8px 14px;
+  font-size: 16px;
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.close-btn:hover {
+  background: #c0392b;
+}
