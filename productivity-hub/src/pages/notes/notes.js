@@ -65,6 +65,29 @@ function Notes() {
   setTitleColor(note.titleColor || '#4e54c8');
   setEditIdx(idx);
   };
+  const handleDelete = async (noteId) => {
+  if (!window.confirm('Are you sure you want to delete this note?')) return;
+
+  try {
+    const res = await fetch(`http://localhost:5000/api/notes/${noteId}`, {
+      method: 'DELETE',
+    });
+    const data = await res.json();
+    if (res.ok) {
+      setNotes(notes.filter(note => note.id !== noteId && note._id !== noteId));
+      setSuccessMsg('Note deleted!');
+      setTimeout(() => setSuccessMsg(''), 2000);
+    } else {
+      setErrorMsg(data.error || 'Error deleting note');
+      setTimeout(() => setErrorMsg(''), 3000);
+    }
+  } catch (err) {
+    console.error('Error deleting note:', err);
+    setErrorMsg('Error deleting note');
+    setTimeout(() => setErrorMsg(''), 3000);
+  }
+};
+
 
   // Local update only (backend update can be added)
   const handleUpdate = async () => {
@@ -146,11 +169,7 @@ function Notes() {
               {note.title}
             </div>
             <div className="note-text-preview">
-              {((note.content || note.text) && (note.content || note.text).length > 0)
-                ? ((note.content || note.text).length > 60
-                    ? (note.content || note.text).substring(0, 60) + '...'
-                    : (note.content || note.text))
-                : ''}
+            {note.content || note.text || ''}
             </div>
             <button
               className="edit-btn"
@@ -161,6 +180,16 @@ function Notes() {
             >
               Edit
             </button>
+            <button
+              className="delete-btn"
+              onClick={(e) => {
+                 e.stopPropagation(); // prevent popup
+               handleDelete(note.id || note._id);
+                }}
+  >
+            Delete
+            </button>
+
           </div>
         ))}
       </div>

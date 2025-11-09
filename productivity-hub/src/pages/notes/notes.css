@@ -1,141 +1,201 @@
+/* ---------- General Layout ---------- */
 .notes-container-full {
-  max-width: auto;
-  margin: auto;
-  padding: 20px;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 25px;
+  background: #f7f8fc;
+  border-radius: 16px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+  font-family: 'Inter', sans-serif;
+  color: #333;
+  transition: all 0.3s ease;
 }
 
+/* ---------- Input Section ---------- */
 .notes-input {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 5px;
+  gap: 12px;
+  margin-bottom: 40px;
 }
 
-.notes-input input,
+.notes-input h2 {
+  text-align: center;
+  color: #4e54c8;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.notes-input input[type="text"],
 .notes-input textarea {
-  padding: 8px;
-  border-radius: 6px;
+  width: 75%;
+  padding: 12px 14px;
+  border-radius: 8px;
   border: 1px solid #ccc;
-  width: 800px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.notes-input input[type="text"]:focus,
+.notes-input textarea:focus {
+  border-color: #4e54c8;
+  box-shadow: 0 0 0 3px rgba(78, 84, 200, 0.2);
+}
+
+.note-textarea {
+  resize: vertical;
+  min-height: 100px;
 }
 
 .notes-input button {
-  padding: 8px 12px;
-  background: #4e54c8;
-  color: #fff;
+  padding: 12px 20px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #4e54c8, #8f94fb);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  width: 400px;
-}
-.notes-input button:hover {
-  background: #3c41a6;
+  transition: all 0.3s ease;
 }
 
+.notes-input button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(78, 84, 200, 0.3);
+}
+
+/* ---------- Notes List ---------- */
 .notes-list-row {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 15px;
-  margin-top: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
 }
 
 .note-card-full {
-  background: #fff;
-  border-radius: 12px;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  padding: 0;
   overflow: hidden;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
   position: relative;
 }
+
 .note-card-full:hover {
-  transform: translateY(-3px);
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
 }
 
 .note-title-full {
-  padding: 8px;
-  font-weight: bold;
-  color: #fff;
+  padding: 12px 16px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  text-align: center;
+  letter-spacing: 0.5px;
 }
 
 .note-text-preview {
-  padding: 10px;
-  font-size: 14px;
-  color: #333;
-  min-height: 60px;
+  padding: 16px;
+  color: #444;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  min-height: 80px;
 }
 
 .edit-btn {
   position: absolute;
-  bottom: 8px;
-  right: 8px;
-  padding: 4px 8px;
-  background: #f39c12;
+  bottom: 10px;
+  right: 10px;
+  background: #4e54c8;
+  color: white;
   border: none;
   border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
   cursor: pointer;
-  color: #fff;
-}
-.edit-btn:hover {
-  background: #d68910;
+  transition: all 0.2s ease;
 }
 
-/* Modal Styling */
-/* Fullscreen Modal */
+.edit-btn:hover {
+  background: #3c40b1;
+}
+
+/* ---------- Modal Styles ---------- */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.85); /* darker background */
+  width: 100%;
+  height: 100%;
+  background: rgba(40, 44, 52, 0.6);
+  backdrop-filter: blur(5px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 999;
+  animation: fadeIn 0.3s ease;
 }
 
 .modal-content {
   background: #fff;
-  width: 80%;         /* take most of the screen */
-  height: 90vh;       /* taller modal for more content */
-  border-radius: 12px;
-  overflow-y: auto;   /* scroll vertically if note is very long */
-  overflow-x: hidden;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-  animation: fadeIn 0.3s ease;
-  display: flex;
-  flex-direction: column;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  padding: 25px 30px;
+  animation: slideUp 0.3s ease;
+  position: relative;
 }
 
 .modal-title {
-  padding: 20px;
-  font-size: 22px;
-  font-weight: bold;
-  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #4e54c8;
+  text-align: center;
+  margin-bottom: 15px;
 }
 
 .modal-body {
-  flex: 1;   /* take all remaining space */
-  padding: 20px;
-  font-size: 18px;
+  font-size: 1rem;
   color: #333;
   line-height: 1.6;
-  white-space: pre-wrap; /* keep line breaks */
-  word-break: break-word; /* wrap long words/content */
+  margin-bottom: 20px;
+  white-space: pre-wrap;
 }
 
 .close-btn {
-  align-self: flex-end;
-  margin: 15px;
-  padding: 8px 14px;
-  font-size: 16px;
-  background: #e74c3c;
-  color: #fff;
+  display: block;
+  width: 100%;
+  padding: 10px 0;
   border: none;
-  border-radius: 6px;
+  background: #4e54c8;
+  color: #fff;
+  border-radius: 8px;
   cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
+
 .close-btn:hover {
-  background: #c0392b;
+  background: #383cab;
+}
+
+/* ---------- Animations ---------- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }

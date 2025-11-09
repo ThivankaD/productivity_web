@@ -1,30 +1,71 @@
 .bookmark-container {
-  max-width: 500px;
-  margin: 2rem auto;
-  background: #f7f7fa;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  padding: 2rem;
+  max-width: 800px;
+  margin: 3rem auto;
+  background: #f9f9fb;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  padding: 3rem 2.5rem;
+  border: 2px solid transparent;
+  background-image: linear-gradient(#f9f9fb, #f9f9fb),
+    linear-gradient(to right, #667eea, #764ba2);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  transition: all 0.3s ease;
 }
+
+.bookmark-container:hover {
+  transform: scale(1.02);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+}
+
+.bookmark-container h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #4e54c8;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
 .bookmark-input {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
+
 .bookmark-input input {
-  flex: 1;
-  padding: 0.5rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  flex: 1 1 250px;
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  border: 1.5px solid #ccc;
+  font-size: 1rem;
+  transition: all 0.3s ease;
 }
+
+.bookmark-input input:focus {
+  border-color: #4e54c8;
+  box-shadow: 0 0 6px rgba(78, 84, 200, 0.3);
+  outline: none;
+}
+
 .bookmark-input button {
-  background: #4e54c8;
+  background: linear-gradient(to right, #667eea, #764ba2);
   color: #fff;
   border: none;
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
+
+.bookmark-input button:hover {
+  background: linear-gradient(to right, #5a67d8, #6b46c1);
+  transform: translateY(-2px);
+}
+
 .bookmark-list {
   display: flex;
   flex-direction: column;
@@ -33,37 +74,49 @@
 
 .bookmark-card {
   background: #fff;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   display: flex;
   align-items: center;
-  gap: 1rem;
+  justify-content: space-between;
+  transition: all 0.2s ease;
 }
+
+.bookmark-card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 4px 10px rgba(78, 84, 200, 0.15);
+}
+
 .bookmark-favicon {
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   background: #eee;
-  margin-right: 0.5rem;
+  flex-shrink: 0;
 }
+
 .bookmark-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
+  flex: 1;
+  margin-left: 1rem;
+  overflow: hidden;
 }
+
 .bookmark-title {
   font-weight: 600;
   color: #4e54c8;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
 }
+
 .bookmark-card a {
   color: #4e54c8;
   font-weight: 500;
-  word-break: break-all;
   text-decoration: none;
   font-size: 0.95rem;
+  word-break: break-all;
 }
+
 .bookmark-card a:hover {
   text-decoration: underline;
 }

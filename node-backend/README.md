@@ -18,3 +18,10 @@ npm start
 - `GET /` - Health check
 
 Add more endpoints and models as needed for your application.
+for containorized data
+MYSQL_HOST=db
+MYSQL_USER=root
+MYSQL_PASSWORD=********
+MYSQL_PORT=3306
+MYSQL_DATABASE=productivity_hub
+PORT=5000
