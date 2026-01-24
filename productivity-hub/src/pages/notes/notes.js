@@ -11,6 +11,7 @@ function Notes() {
   const [input, setInput] = useState('');
   const [editIdx, setEditIdx] = useState(null);
   const [selectedNote, setSelectedNote] = useState(null); // for popup
+  const [addModalOpen, setAddModalOpen] = useState(false);
 
   // Get userId from localStorage after login
   const userId = localStorage.getItem('userId');
@@ -51,6 +52,7 @@ function Notes() {
           setTitle('');
           setInput('');
           setTitleColor('#4e54c8');
+          setAddModalOpen(false);
           setSuccessMsg('Note added!');
           setTimeout(() => setSuccessMsg(''), 2000);
         })
@@ -60,34 +62,12 @@ function Notes() {
 
   const handleEdit = (idx) => {
     const note = notes[idx];
-  setTitle(note.title);
-  setInput(note.content || note.text);
-  setTitleColor(note.titleColor || '#4e54c8');
-  setEditIdx(idx);
+    setTitle(note.title);
+    setInput(note.content || note.text);
+    setTitleColor(note.titleColor || '#4e54c8');
+    setEditIdx(idx);
+    setAddModalOpen(true);
   };
-  const handleDelete = async (noteId) => {
-  if (!window.confirm('Are you sure you want to delete this note?')) return;
-
-  try {
-    const res = await fetch(`http://localhost:5000/api/notes/${noteId}`, {
-      method: 'DELETE',
-    });
-    const data = await res.json();
-    if (res.ok) {
-      setNotes(notes.filter(note => note.id !== noteId && note._id !== noteId));
-      setSuccessMsg('Note deleted!');
-      setTimeout(() => setSuccessMsg(''), 2000);
-    } else {
-      setErrorMsg(data.error || 'Error deleting note');
-      setTimeout(() => setErrorMsg(''), 3000);
-    }
-  } catch (err) {
-    console.error('Error deleting note:', err);
-    setErrorMsg('Error deleting note');
-    setTimeout(() => setErrorMsg(''), 3000);
-  }
-};
-
 
   // Local update only (backend update can be added)
   const handleUpdate = async () => {
@@ -108,6 +88,7 @@ function Notes() {
         setInput('');
         setTitleColor('#4e54c8');
         setEditIdx(null);
+        setAddModalOpen(false);
         setSuccessMsg('Note updated!');
         setTimeout(() => setSuccessMsg(''), 2000);
       } catch (err) {
@@ -117,43 +98,47 @@ function Notes() {
     }
   };
 
+  const handleDelete = async () => {
+    if (!window.confirm('Are you sure you want to delete this note?')) return;
+    
+    if (editIdx !== null) {
+      const noteToDelete = notes[editIdx];
+      try {
+        const res = await fetch(`http://localhost:5000/api/notes/${noteToDelete.id || noteToDelete._id}`, {
+          method: 'DELETE',
+        });
+        const data = await res.json();
+        if (res.ok) {
+          setNotes(notes.filter((_, idx) => idx !== editIdx));
+          setTitle('');
+          setInput('');
+          setTitleColor('#4e54c8');
+          setEditIdx(null);
+          setAddModalOpen(false);
+          setSuccessMsg('Note deleted!');
+          setTimeout(() => setSuccessMsg(''), 2000);
+        } else {
+          setErrorMsg(data.error || 'Error deleting note');
+          setTimeout(() => setErrorMsg(''), 3000);
+        }
+      } catch (err) {
+        console.error('Error deleting note:', err);
+        setErrorMsg('Error deleting note');
+        setTimeout(() => setErrorMsg(''), 3000);
+      }
+    }
+  };
+
   return (
     <div className="notes-container-full">
-      
-      <div className="notes-input">
+      <div className="notes-header">
         <h2>Notes</h2>
-        <input
-          type="text"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-          placeholder="Note title..."
-        />
-        <div style={{ margin: '8px 0' }}>
-          <label style={{ marginRight: '8px' }}>Title Highlight Color:</label>
-          <input
-            type="color"
-            value={titleColor}
-            onChange={e => setTitleColor(e.target.value)}
-            style={{ verticalAlign: 'middle' }}
-          />
-        </div>
-        <textarea
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          placeholder="Write a note..."
-          rows={4}
-          className="note-textarea"
-        />
-        {editIdx === null ? (
-          <>
-            <button onClick={handleAdd}>Add</button>
-            {successMsg && <div style={{ color: 'green', marginTop: '8px' }}>{successMsg}</div>}
-            {errorMsg && <div style={{ color: 'red', marginTop: '8px' }}>{errorMsg}</div>}
-          </>
-        ) : (
-          <button onClick={handleUpdate}>Update</button>
-        )}
+        <button className="add-note-btn" onClick={() => setAddModalOpen(true)}>
+          + Add Note
+        </button>
       </div>
+      {successMsg && <div className="success-msg">{successMsg}</div>}
+      {errorMsg && <div className="error-msg">{errorMsg}</div>}
 
       <div className="notes-list-row">
         {notes.map((note, idx) => (
@@ -169,7 +154,11 @@ function Notes() {
               {note.title}
             </div>
             <div className="note-text-preview">
-            {note.content || note.text || ''}
+              {((note.content || note.text) && (note.content || note.text).length > 0)
+                ? ((note.content || note.text).length > 60
+                    ? (note.content || note.text).substring(0, 60) + '...'
+                    : (note.content || note.text))
+                : ''}
             </div>
             <button
               className="edit-btn"
@@ -180,21 +169,11 @@ function Notes() {
             >
               Edit
             </button>
-            <button
-              className="delete-btn"
-              onClick={(e) => {
-                 e.stopPropagation(); // prevent popup
-               handleDelete(note.id || note._id);
-                }}
-  >
-            Delete
-            </button>
-
           </div>
         ))}
       </div>
 
-      {/* Popup Modal */}
+      {/* View Note Popup Modal */}
       {selectedNote && (
         <div className="modal-overlay" onClick={() => setSelectedNote(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -207,6 +186,53 @@ function Notes() {
             <button className="close-btn" onClick={() => setSelectedNote(null)}>
               Close
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Add/Edit Note Modal */}
+      {addModalOpen && (
+        <div className="modal-overlay" onClick={() => {
+          setAddModalOpen(false);
+          setEditIdx(null);
+          setTitle('');
+          setInput('');
+          setTitleColor('#4e54c8');
+        }}>
+          <div className="modal-content add-note-modal" onClick={(e) => e.stopPropagation()}>
+            <h2 className="modal-title">{editIdx === null ? 'Add Note' : 'Edit Note'}</h2>
+            <input
+              type="text"
+              value={title}
+              onChange={e => setTitle(e.target.value)}
+              placeholder="Note title..."
+              className="add-note-input"
+            />
+            <div className="color-picker-section">
+              <label>Title Highlight Color:</label>
+              <input
+                type="color"
+                value={titleColor}
+                onChange={e => setTitleColor(e.target.value)}
+              />
+            </div>
+            <textarea
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              placeholder="Write a note..."
+              rows={6}
+              className="add-note-textarea"
+            />
+            <div className="modal-buttons">
+              <button className="add-btn" onClick={editIdx === null ? handleAdd : handleUpdate}>
+                {editIdx === null ? 'Add' : 'Update'}
+              </button>
+              {editIdx !== null && (
+                <button className="delete-btn-modal" onClick={handleDelete}>
+                  Delete
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}

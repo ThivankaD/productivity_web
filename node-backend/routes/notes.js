@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 
-// ✅ Create note
+
 router.post('/', async (req, res) => {
   const { user, title, content } = req.body;
   console.log('POST /notes body:', req.body);
@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// ✅ Get all notes for a user
+
 router.get('/user/:userId', async (req, res) => {
   try {
     const [notes] = await db.query(
@@ -41,7 +41,7 @@ router.get('/user/:userId', async (req, res) => {
   }
 });
 
-// ✅ Update a note
+
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { title, content } = req.body;
@@ -63,7 +63,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// ✅ Delete a note
+
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {

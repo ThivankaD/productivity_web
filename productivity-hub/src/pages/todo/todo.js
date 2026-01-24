@@ -106,55 +106,83 @@ function Todo() {
 
   return (
     <div className="todo-container">
-      <h2>To-Do List</h2>
-      <div className="todo-input">
+      <div className="todo-header">
+        <h2>📝 To-Do List</h2>
+        <span className="todo-count">{tasks.filter(t => !t.completed).length} pending</span>
+      </div>
+      
+      <div className="todo-input-card">
         <input
           type="text"
           value={task}
           onChange={e => setTask(e.target.value)}
-          placeholder="Enter task..."
+          placeholder="What needs to be done?"
+          className="task-input"
         />
-        <input
-          type="date"
-          value={created_at}
-          onChange={e => setCreated_at(e.target.value)}
-        />
-        <button onClick={handleAdd}>Add</button>
+        <div className="input-actions">
+          <input
+            type="date"
+            value={created_at}
+            onChange={e => setCreated_at(e.target.value)}
+            className="date-input"
+          />
+          <button onClick={handleAdd} className="add-btn">+ Add Task</button>
+        </div>
       </div>
-      <ul className="todo-list">
-        {tasks.map((item, idx) => (
-          <li key={item.id || item._id || idx}>
-            {editIdx === idx ? (
-              <>
-                <input
-                  type="text"
-                  value={editTask}
-                  onChange={e => setEditTask(e.target.value)}
-                  style={{ marginRight: '8px' }}
-                />
-                <input
-                  type="date"
-                  value={editCreated_at}
-                  onChange={e => setEditCreated_at(e.target.value)}
-                  style={{ marginRight: '8px' }}
-                />
-                <button onClick={handleUpdate} style={{ marginRight: '8px' }}>Save</button>
-                <button onClick={() => setEditIdx(null)}>Cancel</button>
-              </>
-            ) : (
-              <>
-                <span style={{ textDecoration: item.completed ? 'line-through' : 'none' }}>{item.task}</span>
-                <span className="todo-date">{item.created_at}</span>
-                <button onClick={() => handleToggleCompleted(idx)} style={{ marginLeft: '8px', color: item.completed ? 'green' : 'gray' }}>
-                  {item.completed ? 'Completed' : 'Mark Completed'}
-                </button>
-                <button onClick={() => handleEdit(idx)} style={{ marginLeft: '8px' }}>Edit</button>
-                <button onClick={() => handleDelete(item.id || item._id)} style={{ marginLeft: '8px', color: 'red' }}>Delete</button>
-              </>
-            )}
-          </li>
-        ))}
-      </ul>
+
+      <div className="todo-list">
+        {tasks.length === 0 ? (
+          <div className="empty-state">
+            <p>🎯 No tasks yet. Add one to get started!</p>
+          </div>
+        ) : (
+          tasks.map((item, idx) => (
+            <div key={item.id || item._id || idx} className={`todo-item ${item.completed ? 'completed' : ''}`}>
+              {editIdx === idx ? (
+                <div className="edit-mode">
+                  <input
+                    type="text"
+                    value={editTask}
+                    onChange={e => setEditTask(e.target.value)}
+                    className="edit-input"
+                    placeholder="Task name"
+                  />
+                  <input
+                    type="date"
+                    value={editCreated_at}
+                    onChange={e => setEditCreated_at(e.target.value)}
+                    className="edit-date"
+                  />
+                  <div className="edit-actions">
+                    <button onClick={handleUpdate} className="save-btn">✓ Save</button>
+                    <button onClick={() => setEditIdx(null)} className="cancel-btn">✕ Cancel</button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="todo-content">
+                    <button 
+                      onClick={() => handleToggleCompleted(idx)} 
+                      className="checkbox-btn"
+                      title={item.completed ? 'Mark as incomplete' : 'Mark as complete'}
+                    >
+                      {item.completed ? '✓' : '○'}
+                    </button>
+                    <div className="task-details">
+                      <span className="task-name">{item.task}</span>
+                      <span className="task-date">📅 {item.created_at}</span>
+                    </div>
+                  </div>
+                  <div className="todo-actions">
+                    <button onClick={() => handleEdit(idx)} className="edit-btn" title="Edit task">✏️</button>
+                    <button onClick={() => handleDelete(item.id || item._id)} className="delete-btn" title="Delete task">🗑️</button>
+                  </div>
+                </>
+              )}
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 }

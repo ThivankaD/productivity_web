@@ -11,50 +11,23 @@
   transition: all 0.3s ease;
 }
 
-/* ---------- Input Section ---------- */
-.notes-input {
-  background: white;
-  padding: 25px;
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+/* ---------- Header Section ---------- */
+.notes-header {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 40px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
 }
 
-.notes-input h2 {
-  text-align: center;
+.notes-header h2 {
   color: #4e54c8;
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 10px;
+  margin: 0;
 }
 
-.notes-input input[type="text"],
-.notes-input textarea {
-  width: 75%;
-  padding: 12px 14px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-  outline: none;
-  transition: border-color 0.2s ease;
-}
-
-.notes-input input[type="text"]:focus,
-.notes-input textarea:focus {
-  border-color: #4e54c8;
-  box-shadow: 0 0 0 3px rgba(78, 84, 200, 0.2);
-}
-
-.note-textarea {
-  resize: vertical;
-  min-height: 100px;
-}
-
-.notes-input button {
-  padding: 12px 20px;
+.add-note-btn {
+  padding: 12px 24px;
   border: none;
   border-radius: 8px;
   background: linear-gradient(135deg, #4e54c8, #8f94fb);
@@ -65,9 +38,29 @@
   transition: all 0.3s ease;
 }
 
-.notes-input button:hover {
+.add-note-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(78, 84, 200, 0.3);
+}
+
+.success-msg {
+  background: #d4edda;
+  color: #155724;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.error-msg {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 500;
 }
 
 /* ---------- Notes List ---------- */
@@ -104,6 +97,7 @@
 
 .note-text-preview {
   padding: 16px;
+  padding-bottom: 50px;
   color: #444;
   font-size: 0.95rem;
   line-height: 1.4;
@@ -114,19 +108,23 @@
   position: absolute;
   bottom: 10px;
   right: 10px;
-  background: #4e54c8;
-  color: white;
+  background: #2e35c4;
+  color: rgb(243, 54, 54);
   border: none;
   border-radius: 6px;
-  padding: 6px 12px;
+  padding: 8px 16px;
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  z-index: 10;
+  box-shadow: 0 2px 6px rgba(78, 84, 200, 0.3);
 }
 
 .edit-btn:hover {
   background: #3c40b1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(78, 84, 200, 0.4);
 }
 
 /* ---------- Modal Styles ---------- */
@@ -148,7 +146,9 @@
 .modal-content {
   background: #fff;
   width: 90%;
-  max-width: 500px;
+  max-width: 600px;
+  max-height: 85vh;
+  overflow-y: auto;
   border-radius: 14px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
   padding: 25px 30px;
@@ -187,6 +187,118 @@
 
 .close-btn:hover {
   background: #383cab;
+}
+
+/* ---------- Add Note Modal ---------- */
+.add-note-modal {
+  max-width: 600px;
+  width: 90%;
+}
+
+.add-note-modal h2 {
+  text-align: center;
+  color: #4e54c8;
+  margin-bottom: 20px;
+}
+
+.add-note-input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  outline: none;
+  margin-bottom: 15px;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.add-note-input:focus {
+  border-color: #4e54c8;
+  box-shadow: 0 0 0 3px rgba(78, 84, 200, 0.2);
+}
+
+.color-picker-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.color-picker-section label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.color-picker-section input[type="color"] {
+  width: 50px;
+  height: 35px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.add-note-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  outline: none;
+  margin-bottom: 20px;
+  resize: vertical;
+  min-height: 120px;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.add-note-textarea:focus {
+  border-color: #4e54c8;
+  box-shadow: 0 0 0 3px rgba(78, 84, 200, 0.2);
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.add-btn {
+  flex: 1;
+  padding: 12px 0;
+  border: none;
+  background: linear-gradient(135deg, #4e54c8, #8f94fb);
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.add-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(78, 84, 200, 0.3);
+}
+
+.delete-btn-modal {
+  flex: 1;
+  padding: 12px 0;
+  border: none;
+  background: #e74c3c;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.delete-btn-modal:hover {
+  background: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
 }
 
 /* ---------- Animations ---------- */
