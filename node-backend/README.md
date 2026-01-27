@@ -26,4 +26,4 @@ MYSQL_PORT=3306
 MYSQL_DATABASE=productivity_hub
 PORT=5000
 
-nggork
+ng
