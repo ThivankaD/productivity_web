@@ -1,4 +1,4 @@
-# Use Node LTS with Bash (Debian-based)
+# Use Node LTS
 FROM node:18
 
 # Set working directory
@@ -8,9 +8,11 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install --production
 
-# Copy wait-for-it script and give execute permission
-COPY wait-for-it.sh ./
-RUN chmod +x ./wait-for-it.sh
+# Install mysql2 if not in package.json (needed for wait-for-db script)
+RUN npm list mysql2 || npm install mysql2
+
+# Copy wait-for-db script
+COPY wait-for-db.js ./
 
 # Copy the rest of the application
 COPY . .
@@ -18,5 +20,5 @@ COPY . .
 # Expose backend port
 EXPOSE 5000
 
-# Start the backend only after MySQL is ready
-CMD ["bash", "./wait-for-it.sh", "db:3306", "--", "npm", "start"]
+# Start with the wait script
+CMD ["node", "wait-for-db.js"]
