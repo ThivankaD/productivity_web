@@ -17,7 +17,7 @@ function Todo() {
 
   useEffect(() => {
     if (!userId) return;
-    fetch(`http://localhost:5000/api/todos/user/${userId}`)
+    fetch(`http://13.61.27.233:5000/api/todos/user/${userId}`)
       .then(res => res.json())
       .then(data => setTasks(Array.isArray(data) ? data : []))
       .catch(err => console.error('Error fetching todos:', err));
@@ -25,7 +25,7 @@ function Todo() {
 
   const handleAdd = () => {
     if (task.trim() && created_at) {
-      fetch('http://localhost:5000/api/todos', {
+      fetch('http://13.61.27.233:5000/api/todos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -54,7 +54,7 @@ function Todo() {
     if (editIdx !== null && editTask.trim() && editCreated_at) {
       const todoToUpdate = tasks[editIdx];
       try {
-        const res = await fetch(`http://localhost:5000/api/todos/${todoToUpdate.id || todoToUpdate._id}`, {
+        const res = await fetch(`http://13.61.27.233:5000/api/todos/${todoToUpdate.id || todoToUpdate._id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ task: editTask, createdAt: editCreated_at })
@@ -73,7 +73,7 @@ function Todo() {
   };
 
   const handleDelete = id => {
-    fetch(`http://localhost:5000/api/todos/${id}`, {
+    fetch(`http://13.61.27.233:5000/api/todos/${id}`, {
       method: 'DELETE'
     })
       .then(res => res.json())
@@ -85,7 +85,7 @@ function Todo() {
    const handleToggleCompleted = async idx => {
     const todo = tasks[idx];
     try {
-      const res = await fetch(`http://localhost:5000/api/todos/${todo.id || todo._id}`, {
+      const res = await fetch(`http://13.61.27.233:5000/api/todos/${todo.id || todo._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

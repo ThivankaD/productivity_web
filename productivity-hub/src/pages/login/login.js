@@ -18,7 +18,7 @@ function LoginPage() {
       return;
     }
     try {
-      const res = await fetch('http://localhost:5000/api/users/login', {
+      const res = await fetch('http://13.61.27.233:5000/api/users/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
@@ -79,7 +79,7 @@ function LoginPage() {
                     return;
                   }
                   try {
-                    const res = await fetch('http://localhost:5000/api/users/register', {
+                    const res = await fetch('http://13.61.27.233:5000/api/users/register', {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/json' },
                       body: JSON.stringify({ username, email, password })

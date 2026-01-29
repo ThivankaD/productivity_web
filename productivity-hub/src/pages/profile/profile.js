@@ -13,7 +13,7 @@ function Profile() {
   // Fetch user profile from backend
   useEffect(() => {
     if (!userId) return;
-    fetch(`http://localhost:5000/api/users/${userId}`)
+    fetch(`http://13.61.27.233:5000/api/users/${userId}`)
       .then(res => res.json())
       .then(data => {
         setUsername(data.username || '');
@@ -25,7 +25,7 @@ function Profile() {
   // Register or update user profile
   const handleSave = e => {
     e.preventDefault();
-    fetch('http://localhost:5000/api/users/register', {
+    fetch('http://13.61.27.233:5000/api/users/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, email, password })

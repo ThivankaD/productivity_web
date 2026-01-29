@@ -19,7 +19,7 @@ function Notes() {
   // Fetch notes from backend
   useEffect(() => {
     if (!userId) return;
-    fetch(`http://localhost:5000/api/notes/user/${userId}`)
+    fetch(`http://13.61.27.233:5000/api/notes/user/${userId}`)
       .then(res => res.json())
       .then(data => setNotes(Array.isArray(data) ? data : []))
       .catch(err => {
@@ -36,7 +36,7 @@ function Notes() {
       return;
     }
     if (title.trim() && input.trim()) {
-      fetch('http://localhost:5000/api/notes', {
+      fetch('http://13.61.27.233:5000/api/notes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -74,7 +74,7 @@ function Notes() {
     if (editIdx !== null && title.trim() && input.trim()) {
       const noteToUpdate = notes[editIdx];
       try {
-        const res = await fetch(`http://localhost:5000/api/notes/${noteToUpdate.id || noteToUpdate._id}`, {
+        const res = await fetch(`http://13.61.27.233:5000/api/notes/${noteToUpdate.id || noteToUpdate._id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ title, content: input })
@@ -104,7 +104,7 @@ function Notes() {
     if (editIdx !== null) {
       const noteToDelete = notes[editIdx];
       try {
-        const res = await fetch(`http://localhost:5000/api/notes/${noteToDelete.id || noteToDelete._id}`, {
+        const res = await fetch(`http://13.61.27.233:5000/api/notes/${noteToDelete.id || noteToDelete._id}`, {
           method: 'DELETE',
         });
         const data = await res.json();

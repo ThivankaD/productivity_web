@@ -13,7 +13,7 @@ function Bookmark() {
 
   useEffect(() => {
     if (!userId) return;
-    fetch(`http://localhost:5000/api/bookmarks/user/${userId}`)
+    fetch(`http://13.61.27.233:5000/api/bookmarks/user/${userId}`)
       .then(res => res.json())
       .then(data => setBookmarks(Array.isArray(data) ? data : []))
       .catch(err => console.error('Error fetching bookmarks:', err));
@@ -30,7 +30,7 @@ function Bookmark() {
 
   const handleAdd = () => {
     if (name.trim() && link.trim()) {
-      fetch('http://localhost:5000/api/bookmarks', {
+      fetch('http://13.61.27.233:5000/api/bookmarks', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -49,7 +49,7 @@ function Bookmark() {
     }
   };
    const handleDelete = id => {
-    fetch(`http://localhost:5000/api/bookmarks/${id}`, {
+    fetch(`http://13.61.27.233:5000/api/bookmarks/${id}`, {
       method: 'DELETE'
     })
       .then(res => res.json())
