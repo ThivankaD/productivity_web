@@ -4,11 +4,14 @@ services:
   db:
     image: mysql:8
     restart: always
+    command:
+      - --innodb-buffer-pool-size=256M
+      - --innodb-log-buffer-size=16M
+      - --max-connections=50
+      - --performance-schema=OFF
     environment:
       MYSQL_ROOT_PASSWORD: 80332714
       MYSQL_DATABASE: productivity_hub
-    ports:
-      - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
       - ./db-init:/docker-entrypoint-initdb.d
@@ -18,33 +21,33 @@ services:
       timeout: 5s
       retries: 10
       start_period: 30s
-      
+
   backend:
     image: tivdiss/backend_ph:latest
     ports:
       - "5000:5000"
     environment:
-      - DB_HOST=db
-      - DB_PORT=3306
-      - DB_USER=root
-      - DB_PASSWORD=80332714
-      - DB_NAME=productivity_hub
-      - NODE_ENV=production
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: 80332714
+      DB_NAME: productivity_hub
+      NODE_ENV: production
     depends_on:
       db:
         condition: service_healthy
     restart: unless-stopped
-      
+
   frontend:
     image: tivdiss/frontend_ph:latest
     ports:
       - "3000:3000"
     environment:
-      - REACT_APP_API_URL=http://13.51.205.80:5000
-      - REACT_APP_BACKEND_URL=http://13.51.205.80:5000
+      REACT_APP_API_URL: http://13.61.27.233:5000
+      REACT_APP_BACKEND_URL: http://13.61.27.233:5000
     depends_on:
       - backend
     restart: unless-stopped
-      
+
 volumes:
   db_data:

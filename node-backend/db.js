@@ -1,12 +1,24 @@
-require('dotenv').config();
 const mysql = require('mysql2');
 
+const requiredVars = [
+  'DB_HOST',
+  'DB_USER',
+  'DB_PASSWORD',
+  'DB_NAME'
+];
+
+requiredVars.forEach(v => {
+  if (!process.env[v]) {
+    throw new Error(`Missing required env var: ${v}`);
+  }
+});
+
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || process.env.MYSQL_HOST || 'localhost',
-  user: process.env.DB_USER || process.env.MYSQL_USER || 'root',
-  password: process.env.DB_PASSWORD || process.env.MYSQL_PASSWORD || '',
-  database: process.env.DB_NAME || process.env.MYSQL_DATABASE || 'productivity_hub',
-  port: process.env.DB_PORT || process.env.MYSQL_PORT || 3306,
+  host: process.env.DB_HOST,   // MUST be "db"
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT || 3306,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
