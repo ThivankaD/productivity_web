@@ -1,23 +1,13 @@
-# Use the latest LTS version of Node.js
-FROM node:18-alpine
- 
-# Set the working directory inside the container
-WORKDIR /app
- 
-# Copy package.json and package-lock.json
-COPY package*.json ./
- 
-# Install dependencies
-RUN npm install
- 
-# Copy the rest of your application files
-COPY . .
 
-# Build the React app (if using Create React App)
-# RUN npm run build
- 
-# Expose the port your app runs on (React dev server uses 3000 by default)
-EXPOSE 3000
- 
-# Define the command to run your app
-CMD ["npm", "start"]
+FROM node:18-alpine as builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+
+FROM nginx:alpine
+COPY --from=builder /app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
