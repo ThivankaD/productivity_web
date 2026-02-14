@@ -42,7 +42,7 @@ function LoginPage() {
 
   return (
     <div className="login-container">
-      <h1>Productivity Hub</h1>
+      <h1>Thivanka</h1>
       {!showAuth ? (
         <button className="join-btn" onClick={() => setShowAuth(true)}>
           Join Now
